@@ -14,7 +14,6 @@ export class JwtGuard implements CanActivate {
     async canActivate(context: ExecutionContext) : Promise<boolean> {
         const request = context.switchToHttp().getRequest();
         const token = this.extractToken(request);
-
         if (!token) {
             throw new UnauthorizedException();
         }
@@ -25,11 +24,11 @@ export class JwtGuard implements CanActivate {
                     secret : this.configService.get<string>('SECRET_KEY'),
                 }
             );
-            request['user'] = paylaod;
+        request['user'] = paylaod;
         } catch (err) {
             throw new UnauthorizedException();
         }
-        return true;   
+        return true;
     }
 
     private extractToken(request : Request) : string | undefined {

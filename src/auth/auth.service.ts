@@ -5,6 +5,7 @@ import { UserService } from 'src/user/user.service';
 import * as bcrypt from 'bcrypt';
 import { User } from 'src/entities/user.entity';
 import { UserDto, UserDetails } from 'src/models/user.dto';
+import { configService } from 'src/orm.config';
 
 @Injectable()
 export class AuthService {
@@ -26,6 +27,13 @@ export class AuthService {
         return user;
     }
 
+    async jwtVerify(token : any) : Promise<any> {
+        return await this.jwtService.verifyAsync(token,{
+            secret : process.env.SECRET_KEY
+        })
+    } 
+
+
     async register (user : NewUserDto) : Promise <UserDetails> {
         const { name, email, password } = user;
         const hashedPassword = await bcrypt.hashSync(password, parseInt(process.env.SALT));
@@ -36,7 +44,8 @@ export class AuthService {
 
     async login(user : UserDto) : Promise<{ token : string }> {
         const ForJwt = await this.userService.findByEmail(user.email);
-        const jwt =  this.jwtService.sign ({id : ForJwt.id });
+        const jwt =  this.jwtService.sign({ id : ForJwt.id }, { secret : process.env.SECRET_KEY });
+
         return { token : jwt };
     }   
 }

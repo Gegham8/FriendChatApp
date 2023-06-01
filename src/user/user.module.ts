@@ -11,6 +11,6 @@ import { BlockedUser } from 'src/entities/blocked.users';
     imports : [TypeOrmModule.forFeature([User, FriendEnitity, BlockedUser])],
     controllers : [UserController],
     providers : [UserService,JwtService],
-    exports : [UserService]
+    exports : [UserService, JwtService]
 })
 export class UserModule {}

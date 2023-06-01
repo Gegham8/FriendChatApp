@@ -16,6 +16,18 @@ export class UserService {
         @InjectRepository(BlockedUser) private blockedUserRepository : Repository<BlockedUser>
     ) {}
 
+    async updateColums(id : number, datatoUpdate : Partial<User>) : Promise<any> {
+        const updatedUser = await this.findbyId(id);
+    }
+
+    async findByIds (ids : number[]) : Promise<User[]> {
+        return await this.userRepository
+        .createQueryBuilder('user')
+        .select(['user.id', 'user.name', 'user.email'])
+        .whereInIds(ids)
+        .getMany()
+    }
+
     getUserDetail (user : User) : UserDetails {
         return {
             id : user.id,
@@ -23,7 +35,14 @@ export class UserService {
             email : user.email,
         }
     }
-
+    async findByIdWithPassword(id : number) : Promise<User | undefined> {
+        const user = await this.userRepository.findOne({
+            where : { id : id },
+        })
+        if (user) {
+            return user;
+        }
+    }
     async findByEmail (email : string) : Promise<User | undefined> {
         const user =  await this.userRepository.findOne({
             where: { email : email },
@@ -33,12 +52,12 @@ export class UserService {
         return user;
     }
     
-    async findbyId (_id : number) : Promise<UserWithoutPassword> {
+    async findbyId (_id : number) : Promise<UserWithoutPassword>  {
         const user = await this.userRepository.findOne({
             where: { id : _id },
             select : ['id', 'name', 'email']
         });
-        if(!user) { throw new HttpException(ExceptionMessages.UserIsNotFound, HttpStatus.NOT_FOUND) };
+        if(!user) { throw new HttpException(ExceptionMessages.UserIsNotFound, HttpStatus.NOT_FOUND)};
         return user;
     }
 
@@ -223,7 +242,6 @@ export class UserService {
                 getAllBlockedUsersId.push(user.blocked.id);
             })
         })
-        
         return await this.userRepository
         .createQueryBuilder('user')
         .select(['user.id', 'user.name', 'user.email'])

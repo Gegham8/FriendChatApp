@@ -1,4 +1,4 @@
-import { Controller, Get, Param, ParseIntPipe, UseGuards , Post, Request, Patch, Body} from '@nestjs/common';
+import { Controller, Get, Param, ParseIntPipe, UseGuards , Post, Request, Patch, Body, HttpException} from '@nestjs/common';
 import { UserService } from './user.service';
 import { JwtGuard } from 'src/auth/guards/jwt.guard';
 import { IsBlocking } from 'src/auth/guards/is-user-blocked.guard';

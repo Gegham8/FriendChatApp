@@ -45,5 +45,31 @@ export const ExceptionMessages = {
     AlreadyExists : 'User is already exists',
     IsBlocked : 'User is blocked',
     InvalidData : 'Invalid email or password'
+}
 
+export const serverEmits = {
+    users : 'users'
+}
+
+export const WebSocketRouteEntries = {
+    sendMessage : 'send-message',
+    getMessageByID : 'getMessageById',
+    deleteChat : 'deleteChat',
+    host : 'http://localhost:3000',
+    namespaceName : 'chat',
+}
+export const WsExceptionMessages = {
+    receiverNotConnected : 'Receiver is not connected',
+    notFound : 'User not found'
+}
+
+export const socketEmits = {
+    error : 'error',
+    messages : 'messages',
+    newMessage : 'new-message'
+} 
+
+export const emitMessages = {
+    unauthorized : 'unauthorized',
+    notFound : 'User not found'
 }
